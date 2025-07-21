@@ -74,9 +74,9 @@ export class AuthService {
     const user = await this.userRepository.findOneBy({ email });
     if (!user) throw new UnauthorizedException("E-mail não autorizado");
 
-    // if (!user.email_confirmed) {
-    //   throw new UnauthorizedException("Confirme seu E-mail antes de logar!");
-    // }
+    if (!user.email_confirmed) {
+      throw new UnauthorizedException("Confirme seu E-mail antes de logar!");
+    }
 
     const match = await this.bcryptService.compare(password, user.password);
     if (!match) throw new UnauthorizedException("Credenciais inválidas");
